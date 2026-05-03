@@ -23,7 +23,7 @@ app = FastAPI(title="Team Task Management API")
 origins = [
     "http://localhost:5173",
     "http://localhost:3000",
-    "*" 
+    "https://gallant-achievement-production-025a.up.railway.app"
 ]
 
 app.add_middleware(
