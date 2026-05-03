@@ -12,7 +12,6 @@ A full-stack Task Management application designed for teams to collaborate effic
 - ✅ Task Management
 - 📊 Role-Based Dashboard Views
 - 🎨 Clean UI/UX
-
 ------------------------------------------------------------
 
 🛠️ TECH STACK
