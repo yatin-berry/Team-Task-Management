@@ -15,7 +15,7 @@ def get_projects(db: Session = Depends(get_db), current_user: models.User = Depe
     # Get all projects the user is a member of
     projects = db.query(models.Project).join(models.ProjectMember).filter(
         models.ProjectMember.user_id == current_user.id
-    ).all()
+    ).distinct().all()
     return projects
 
 @router.post("/", response_model=schemas.ProjectResponse)

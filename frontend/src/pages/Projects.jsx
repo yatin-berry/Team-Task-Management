@@ -12,6 +12,7 @@ const Projects = () => {
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [newProject, setNewProject] = useState({ name: '', description: '' });
+  const [creating, setCreating] = useState(false);
 
   useEffect(() => {
     fetchProjects();
@@ -30,6 +31,9 @@ const Projects = () => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
+    if (creating) return;
+    
+    setCreating(true);
     try {
       await api.post('/api/projects/', newProject);
       setShowModal(false);
@@ -38,6 +42,8 @@ const Projects = () => {
       fetchProjects();
     } catch (err) {
       toast.error('Failed to create project');
+    } finally {
+      setCreating(false);
     }
   };
 
@@ -176,9 +182,17 @@ const Projects = () => {
                   </button>
                   <button 
                     type="submit"
-                    className="px-4 py-2 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+                    disabled={creating}
+                    className={`px-4 py-2 rounded-xl bg-primary text-white font-medium transition-colors shadow-lg shadow-primary/20 flex items-center gap-2 ${creating ? 'opacity-70 cursor-not-allowed' : 'hover:bg-primary/90'}`}
                   >
-                    Create Project
+                    {creating ? (
+                      <>
+                        <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        Creating...
+                      </>
+                    ) : (
+                      'Create Project'
+                    )}
                   </button>
                 </div>
               </form>
