@@ -40,35 +40,6 @@ app.include_router(projects.router)
 app.include_router(tasks.router)
 app.include_router(dashboard.router)
 
-from fastapi import Request
-from fastapi.responses import JSONResponse
-
-@app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
-    logger.error(f"Global exception: {exc}", exc_info=True)
-    return JSONResponse(
-        status_code=500,
-        content={"status": "error", "message": str(exc), "type": type(exc).__name__},
-    )
-
 @app.get("/")
 def read_root():
     return {"message": "Welcome to Team Task Management API"}
-
-@app.get("/db-test")
-def test_db(db: Session = Depends(database.get_db)):
-    try:
-        from sqlalchemy import text
-        db.execute(text("SELECT 1"))
-        return {"status": "success", "message": "Database connection is working!"}
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
-
-@app.get("/db-tables")
-def list_tables(db: Session = Depends(database.get_db)):
-    try:
-        from sqlalchemy import inspect
-        inspector = inspect(database.engine)
-        return {"status": "success", "tables": inspector.get_table_names()}
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
