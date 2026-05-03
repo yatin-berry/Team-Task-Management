@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: "team-task-management-production-8ff1.up.railway.app",
+  baseURL: "https://team-task-management-production-8ff1.up.railway.app",
 });
 
 // Add a request interceptor
