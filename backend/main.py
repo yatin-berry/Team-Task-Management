@@ -52,3 +52,12 @@ def test_db(db: Session = Depends(database.get_db)):
         return {"status": "success", "message": "Database connection is working!"}
     except Exception as e:
         return {"status": "error", "message": str(e)}
+
+@app.get("/db-tables")
+def list_tables(db: Session = Depends(database.get_db)):
+    try:
+        from sqlalchemy import inspect
+        inspector = inspect(database.engine)
+        return {"status": "success", "tables": inspector.get_table_names()}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
