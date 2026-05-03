@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
 import models
 import database
 from routers import users, projects, tasks, dashboard
@@ -42,3 +43,12 @@ app.include_router(dashboard.router)
 @app.get("/")
 def read_root():
     return {"message": "Welcome to Team Task Management API"}
+
+@app.get("/db-test")
+def test_db(db: Session = Depends(database.get_db)):
+    try:
+        from sqlalchemy import text
+        db.execute(text("SELECT 1"))
+        return {"status": "success", "message": "Database connection is working!"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
